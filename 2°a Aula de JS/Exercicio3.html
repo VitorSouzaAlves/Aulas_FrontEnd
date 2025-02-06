@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerificarNum</title>
+</head>
+<body>
+    <h2>Digite um número para verificarmos se ele é positivo, negativo ou zero</h2>
+
+    <form>
+        <label for="number">Número: </label>
+        <input type="number" name="number" id="number" placeholder="Digite o número aqui"><br><br>
+
+        <button type="button" onclick="verificarNum()">Verificação</button>
+        <p id="resultado"></p>
+    </form>
+
+    <script>
+        function verificarNum(){
+            let number = parseFloat(document.getElementById('number').value);
+            let resultado = document.getElementById('resultado');
+
+            if(number < 0){
+                resultado.innerText = "Seu número é negativo, inútil, bostinha kk XDD."
+            }else if(number == 0){
+                resultado.innerText = "Seu número é zero, achei fodão brabo 🥵🥵🥶"
+            }else{
+                resultado.innerText = "Você digitou um número positivo nervosão 😴🥱😳👩🏼‍🤝‍🧑🏽®™〰☑☑"
+            }
+        }
+    </script>
+</body>
+</html>

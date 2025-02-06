@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassificaNota</title>
+</head>
+<body>
+    <h2>Digite a sua nota</h2>
+
+    <form>
+        <label for="nota">Nota: </label>
+        <input type="number" name="nota" id="nota" style="width: 200px;" placeholder="Digite a nota que você tirou."><br><br>
+
+        <button type="button" onclick="VerificaçãoNota()">Verificação de aprovação</button>
+        <p id="resultadoTeste"></p>
+    </form>
+
+    <script>
+        
+        function VerificaçãoNota(){
+            let notaAluno = parseFloat(document.getElementById('nota').value)
+            let resultadoTeste = document.getElementById('resultadoTeste')
+
+            if(isNaN(notaAluno) || notaAluno < 0 || notaAluno > 10) {
+                resultadoTeste.innerText = "Digite uma nota válida. (Entre 1 a 10)"
+            }else if(notaAluno == 0 || notaAluno <= 4) {
+                resultadoTeste.innerText = "Reprovado. Estuda mais seu bosta 🤬"
+            }else if(notaAluno == 5 || notaAluno <= 7) {
+                resultadoTeste.innerText = "Aprovado mano, mandou bem 👍"
+            }else {
+                resultadoTeste.innerText = "Aprovado, e com a nota muito alta, brabo demais paizão 👏👏"
+            }
+        }
+    </script>
+</body>
+</html>
