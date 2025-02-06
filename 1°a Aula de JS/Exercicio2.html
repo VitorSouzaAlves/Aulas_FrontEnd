@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercicio2</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        form{
+            margin-bottom: 20px;
+        }
+        #resultadoIMC{
+            margin: auto;
+            height: 15px;
+            width: 300px;
+            padding: 10px;
+            border: solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Preencha os campos a seguir</h2>
+
+    <form id="informacoesUsuario">
+        <label for="weight">Peso:</label><br>
+        <input type="number" name="weight" id="weight" placeholder="Digite o seu peso em Kg"><br><br>
+
+        <label for="height">Altura:</label><br>
+        <input type="number" name="height" id="height" placeholder="Digite a sua altura em metros"><br><br>
+
+        <button type="button" onclick="calculoIMC()">Enviar</button>
+    </form>
+
+    <h1>Abaixo será exibido o seu IMC</h1>
+    <div id="resultadoIMC"></div>
+
+    <script>
+        function calculoIMC() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const imc = weight / (height * height);
+
+            const outputDiv = document.getElementById('output');
+            document.getElementById('resultadoIMC').innerText = `Seu IMC é: ${imc}`
+        }
+    </script>
+</body>
+</html>
