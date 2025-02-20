@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercadinho</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Importando e Gerando arquivos (JSON e XML)</h2>
+    <form id="produtoForm">
+        <label for="nome">Nome do Produto:</label>
+        <input type="text" id="nome" required><br>
+
+        <label for="categoria">Categoria:</label>
+        <input type="text" id="categoria" required><br>
+
+        <label for="preco">Preço:</label>
+        <input type="number" id="preco" step="0.01" required><br>
+
+        <button type="button" onclick="adicionarProduto()">Adicionar Produto</button>
+    </form>
+
+    <h2>Lista de Produtos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaBody"></tbody>
+    </table>
+
+    <button onclick="gerarXML()">Gerar XML</button>
+    <button onclick="gerarJSON()">Gerar JSON</button><br>
+    <button onclick="baixarArquivo()">Baixar arquivo</button>
+
+    <h2>Arquivo gerado:</h2>
+    <pre id="Output"></pre>
+    <pre id="Output"></pre>
+
+    <script>
+        let produtos = []; // Array para armazenar os produtos
+        let xmlString = ""; // Variável para armazenar o XML gerado
+
+        function adicionarProduto() {
+            // Obtém os valores dos campos do formulário
+            let nome = document.getElementById("nome").value;
+            let categoria = document.getElementById("categoria").value;
+            let preco = document.getElementById("preco").value;
+
+            if (nome === "" || categoria === "" || preco === "") {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            // Adiciona o produto ao array
+            produtos.push({ nome, categoria, preco });
+
+            // Atualiza a tabela na tela
+            atualizarTabela();
+
+            // Limpa os campos do formulário
+            document.getElementById("produtoForm").reset();
+        }
+
+        function atualizarTabela() {
+            let tabelaBody = document.getElementById("tabelaBody");
+            tabelaBody.innerHTML = ""; // Limpa a tabela antes de atualizar
+
+            produtos.forEach((produto, index) => {
+                let newRow = tabelaBody.insertRow();
+                newRow.insertCell(0).textContent = produto.nome;
+                newRow.insertCell(1).textContent = produto.categoria;
+                newRow.insertCell(2).textContent = parseFloat(produto.preco).toFixed(2);
+
+                let cellAcoes = newRow.insertCell(3);
+
+                let botaoExcluir = document.createElement("button");
+                botaoExcluir.textContent = "Excluir";
+                botaoExcluir.onclick = function () {
+                    excluirProduto(index);
+                }
+
+                cellAcoes.appendChild(botaoExcluir);
+            });
+        }
+        function excluirProduto(index) {
+            produtos.splice(index, 1);
+            atualizarTabela();
+        }
+
+        let escolherArquivo
+
+        function gerarJSON() {
+            escolherArquivo = 1
+            if (produtos.length === 0) {
+                alert("Adicione pelo menos um produto antes de gerar o JSON!");
+                return;
+            }
+
+            // Cria a estrutura JSON
+            jsonString = `<?JSON version="1.0" encoding="UTF-8"?>\n<produtos>\n`;
+
+            produtos.forEach(produto => {
+                jsonString += `    <produto>\n`;
+                jsonString += `        <nome>${produto.nome}</nome>\n`;
+                jsonString += `        <categoria>${produto.categoria}</categoria>\n`;
+                jsonString += `        <preco>${produto.preco}</preco>\n`;
+                jsonString += `    </produto>\n`;
+            });
+
+            jsonString += `</produtos>`;
+
+            // Exibe o JSON na tela
+            document.getElementById("Output").textContent = jsonString;
+        }
+
+        function gerarXML() {
+            escolherArquivo = 0
+            if (produtos.length === 0) {
+                alert("Adicione pelo menos um produto antes de gerar o XML!");
+                return;
+            }
+
+            // Cria a estrutura XML
+            xmlString = `<?xml version="1.0" encoding="UTF-8"?>\n<produtos>\n`;
+
+            produtos.forEach(produto => {
+                xmlString += `    <produto>\n`;
+                xmlString += `        <nome>${produto.nome}</nome>\n`;
+                xmlString += `        <categoria>${produto.categoria}</categoria>\n`;
+                xmlString += `        <preco>${produto.preco}</preco>\n`;
+                xmlString += `    </produto>\n`;
+            });
+
+            xmlString += `</produtos>`;
+
+            // Exibe o XML na tela
+            document.getElementById("Output").textContent = xmlString;
+        }
+
+        function baixarArquivo() {
+            if (escolherArquivo == 0 && nome != "" && categoria != "" && preco != "") {
+                // Cria um objeto Blob para armazenar o XML
+                let blob = new Blob([xmlString], { type: "application/xml" });
+                let link = document.createElement("a");
+
+                // Cria um link para download do arquivo XML
+                link.href = URL.createObjectURL(blob);
+                link.download = "produtos.xml";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (escolherArquivo == 1 && nome != "" && categoria != "" && preco != "") {
+                // Cria um objeto Blob para armazenar o JSON
+                let blob = new Blob([jsonString], { type: "application/json" });
+                let link = document.createElement("a");
+
+                // Cria um link para download do arquivo XML
+                link.href = URL.createObjectURL(blob);
+                link.download = "produtos.json";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                alert("Escolha o tipo de arquivo a ser gerado!")
+            }
+        }
+
+        // function baixarJSON() {
+        //     if (jsonString === "") {
+        //         alert("Primeiro gere o JSON!");
+        //         return;
+        //     }
+        // }
+
+        // function baixarXML() {
+        //     if (xmlString === "") {
+        //         alert("Primeiro gere o XML!");
+        //         return;
+        //     }
+        // }
+    </script>
+
+</html>
