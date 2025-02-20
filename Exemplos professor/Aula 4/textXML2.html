@@ -16,14 +16,17 @@
             font-size: 16px;
         }
         table {
-            width: 100%;
+            margin: auto;
+            width: 80%;
             border-collapse: collapse;
             margin-top: 20px;
+            table-layout: fixed;
         }
         th, td {
             border: 1px solid black;
             padding: 10px;
-            text-align: left;
+            text-align: center;
+            width: 25%;
         }
     </style>
 </head>
@@ -49,6 +52,7 @@
                 <th>Nome</th>
                 <th>Categoria</th>
                 <th>Preço</th>
+                <th>Ação</th>
             </tr>
         </thead>
         <tbody id="tabelaBody"></tbody>
@@ -89,12 +93,28 @@
             let tabelaBody = document.getElementById("tabelaBody");
             tabelaBody.innerHTML = ""; // Limpa a tabela antes de atualizar
 
-            produtos.forEach(produto => {
+            produtos.forEach((produto, index) => {
                 let newRow = tabelaBody.insertRow();
                 newRow.insertCell(0).textContent = produto.nome;
                 newRow.insertCell(1).textContent = produto.categoria;
                 newRow.insertCell(2).textContent = parseFloat(produto.preco).toFixed(2);
+                
+                //Fiz a partir daqui
+                let cellAcoes = newRow.insertCell(3);
+
+                let botaoExcluir = document.createElement("button");
+                botaoExcluir.textContent = "Excluir";
+                botaoExcluir.onclick = function() {
+                    excluirProduto(index);
+                }
+
+                cellAcoes.appendChild(botaoExcluir);
             });
+        }
+        // Eu que fiz kkXD
+        function excluirProduto(index) {
+            produtos.splice(index, 1);
+            atualizarTabela();
         }
 
         function gerarXML() {
